@@ -33,7 +33,7 @@ public class Intersection {
 
     public Color computeDiffuse(DirectionalLight light){
         Vector normal = (Vector) shape.getNormal(position);
-        Vector lightDir = light.getDirection().normalize().scale(-1.0);
+        Vector lightDir = light.getDirection().normalize();
         double dot = normal.dot(lightDir);
         double lambert = Math.max(0, dot);
         Color lightColor = light.getColor();
@@ -81,7 +81,7 @@ public class Intersection {
         } else {
             // Vecteur vers la lumière (Directionnelle)
             // On inverse la direction des rayons pour pointer VERS la source
-            L = ((DirectionalLight) light).getDirection().normalize().scale(-1.0);
+            L = ((DirectionalLight) light).getDirection().normalize();
         }
 
         // --- CORRECTION "LUMIÈRE FANTÔME" ---

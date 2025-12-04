@@ -84,7 +84,18 @@ public class RayTracerTest {
             "tp51-specular.test, tp51-specularr.png",
             "tp51-diffuse.test,  tp51-diffuse.png",
             "tp54.test,          tp54.png",
-            "tp55.test,          tp55.png"
+            "tp55.test,          tp55.png",
+            "tp61.test,          tp61_real.png",
+            "tp61-dir.test,          tp61-dir.png",
+            "tp62-1.test,          tp62-1.png",
+            "tp62-2.test,          tp62-2-real.png",
+            "tp62-3.test,          tp62-3.png",
+            "tp62-4.test,          tp62-4.png",
+            "tp62-5.test,          tp62-5.png",
+            "tp63.test,          tp63.png",
+            "tp64.test,          tp64.png",
+
+
     })
     void testAllScenes(String sceneFile, String referenceImage) {
         assertRenderMatchesReference(sceneFile, referenceImage, DEFAULT_TOLERANCE);
