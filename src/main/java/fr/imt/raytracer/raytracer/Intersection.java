@@ -70,7 +70,7 @@ public class Intersection {
         return new Color(r, g, b);
     }
 
-    public Color computeSpecular(Light light, Camera camera) {
+    public Color computeSpecular(Light light, Vector viewDir) {
         // 1. Récupération de la normale
         Vector normal = ((Vector) shape.getNormal(position)).normalize();
 
@@ -93,7 +93,7 @@ public class Intersection {
         // ------------------------------------
 
         // 2. Vecteur Vue (V) : De l'intersection VERS la caméra
-        Vector V = camera.getLookFrom().sub(position).normalize();
+        Vector V = viewDir.normalize();
 
         // 3. Vecteur Halfway (H) pour le modèle Blinn-Phong
         Vector H = L.add(V).normalize();

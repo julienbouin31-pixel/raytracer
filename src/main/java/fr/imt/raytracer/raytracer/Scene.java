@@ -72,8 +72,10 @@ public class Scene {
             if (isInShadow(inter, light)) continue;
 
             Color diffuse = (light instanceof DirectionalLight dl) ? inter.computeDiffuse(dl) : inter.computeDiffuse((PointLight) light);
-            Color specular = inter.computeSpecular(light, camera);
+            Vector viewDir = ray.getDirection().scale(-1.0).normalize();
 
+// On appelle la nouvelle méthode avec viewDir au lieu de camera
+            Color specular = inter.computeSpecular(light, viewDir);
             result = new Color(
                     result.r() + diffuse.r() + specular.r(),
                     result.g() + diffuse.g() + specular.g(),
