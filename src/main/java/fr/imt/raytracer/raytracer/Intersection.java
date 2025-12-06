@@ -87,7 +87,7 @@ public class Intersection {
         // --- CORRECTION "LUMIÈRE FANTÔME" ---
         // Si la surface tourne le dos à la lumière, il ne peut pas y avoir de reflet spéculaire.
         // Cela supprime la tache lumineuse bizarre au centre des objets.
-        if (normal.dot(L) <= 0) {
+        if (normal.dot(L) < 0) {
             return new Color(0, 0, 0);
         }
         // ------------------------------------

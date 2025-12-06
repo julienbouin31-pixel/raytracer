@@ -31,7 +31,6 @@ public abstract class AbstractVec3 {
 
     protected abstract AbstractVec3 create(double x, double y, double z);
 
-    // Getters
     public double getX() { return x; }
     public double getY() { return y; }
     public double getZ() { return z; }

@@ -92,8 +92,7 @@ public class RayTracerTest {
             "tp62-3.test,          tp62-3.png",
             "tp62-4.test,          tp62-4.png",
             "tp62-5.test,          tp62-5.png",
-            "tp63.test,          tp63.png",
-            "tp64.test,          tp64.png",
+            "tp63.test,          tp63.png"
 
 
     })

@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         SceneFileParser parser = new SceneFileParser();
-        Scene scene = parser.parse("src/main/resources/jalon5/tp64.test");
+        Scene scene = parser.parse("src/main/resources/final_avec_bonus.scene");
 
         Renderer renderer = new Renderer();
         renderer.render(scene);
