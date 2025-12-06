@@ -7,10 +7,18 @@ import fr.imt.raytracer.geometry.Shape;
 import fr.imt.raytracer.geometry.Vector;
 import fr.imt.raytracer.imaging.Color;
 
+/**
+ * Stocke les informations d'un impact entre un rayon et une forme.
+ * <p>
+ * </p>
+ */
 public class Intersection {
 
+    /** Distance depuis l'origine du rayon (t). */
     private final double t;
+    /** Point précis de l'impact dans l'espace 3D. */
     private final Point position;
+    /** L'objet géométrique touché. */
     private final Shape shape;
 
     public Intersection(double t, Point position, Shape shape){
@@ -31,9 +39,16 @@ public class Intersection {
         return shape;
     }
 
+    /**
+     * Calcule la réflexion diffuse (Loi de Lambert) pour une lumière directionnelle.
+     *
+     * @param light La source de lumière (rayons parallèles).
+     * @return La couleur résultante.
+     */
     public Color computeDiffuse(DirectionalLight light){
         Vector normal = (Vector) shape.getNormal(position);
         Vector lightDir = light.getDirection().normalize();
+
         double dot = normal.dot(lightDir);
         double lambert = Math.max(0, dot);
         Color lightColor = light.getColor();
@@ -47,6 +62,9 @@ public class Intersection {
 
     }
 
+    /**
+     * Calcule la réflexion diffuse pour une lumière ponctuelle.
+     */
     public Color computeDiffuse(PointLight light) {
 
         Vector normal = (Vector) shape.getNormal(position);
@@ -70,53 +88,42 @@ public class Intersection {
         return new Color(r, g, b);
     }
 
+    /**
+     * Calcule la réflexion spéculaire (Modèle de Blinn-Phong).
+     * Simule le reflet brillant de la source lumineuse sur la surface.
+     * @param light La source lumineuse.
+     * @param viewDir Le vecteur direction vers la caméra (V).
+     * @return La couleur spéculaire calculée.
+     */
     public Color computeSpecular(Light light, Vector viewDir) {
-        // 1. Récupération de la normale
+
         Vector normal = ((Vector) shape.getNormal(position)).normalize();
 
         Vector L;
         if (light instanceof PointLight pl) {
-            // Vecteur vers la lumière (Point)
             L = pl.getPosition().sub(position).normalize();
         } else {
-            // Vecteur vers la lumière (Directionnelle)
-            // On inverse la direction des rayons pour pointer VERS la source
             L = ((DirectionalLight) light).getDirection().normalize();
         }
 
-        // --- CORRECTION "LUMIÈRE FANTÔME" ---
-        // Si la surface tourne le dos à la lumière, il ne peut pas y avoir de reflet spéculaire.
-        // Cela supprime la tache lumineuse bizarre au centre des objets.
         if (normal.dot(L) < 0) {
             return new Color(0, 0, 0);
         }
-        // ------------------------------------
 
-        // 2. Vecteur Vue (V) : De l'intersection VERS la caméra
         Vector V = viewDir.normalize();
 
-        // 3. Vecteur Halfway (H) pour le modèle Blinn-Phong
         Vector H = L.add(V).normalize();
 
-        // 4. Calcul du facteur spéculaire
         double dotNH = Math.max(0, normal.dot(H));
         double specFactor = Math.pow(dotNH, shape.getShininess());
 
         Color lightColor = light.getColor();
         Color specColor  = shape.getSpecular();
 
-        // 5. Calcul final de la couleur
         double r = specFactor * lightColor.r() * specColor.r();
         double g = specFactor * lightColor.g() * specColor.g();
         double b = specFactor * lightColor.b() * specColor.b();
 
         return new Color(r, g, b);
     }
-
-
-
-
-
-
-
 }
