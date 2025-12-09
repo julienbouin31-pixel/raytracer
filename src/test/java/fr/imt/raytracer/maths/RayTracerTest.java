@@ -5,7 +5,6 @@ import fr.imt.raytracer.parsing.SceneFileParser;
 import fr.imt.raytracer.raytracer.Renderer;
 import fr.imt.raytracer.raytracer.Scene;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -17,7 +16,9 @@ import javax.imageio.ImageIO;
 
 public class RayTracerTest {
 
-    private static final String RESOURCES_DIR = "src/main/resources/jalon5/";
+    private static final String RESOURCES_DIR = "src/main/resources/scenes/";
+
+    private static final String GENERATED_OUTPUT_DIR = "src/main/resources/output_images/";
 
     private static final int DEFAULT_TOLERANCE = 1000;
 
@@ -25,17 +26,18 @@ public class RayTracerTest {
     private void assertRenderMatchesReference(String sceneFileName, String expectedImageName, int tolerance) {
         try {
             String scenePath = RESOURCES_DIR + sceneFileName;
-            String expectedPath = RESOURCES_DIR + expectedImageName;
 
             System.out.println("=== Test : " + sceneFileName + " ===");
 
             SceneFileParser parser = new SceneFileParser();
             Scene scene = parser.parse(scenePath);
 
-            String generatedImagePath = scene.getOutput();
-
             Renderer renderer = new Renderer();
             renderer.render(scene);
+
+            String expectedPath = RESOURCES_DIR + expectedImageName;
+
+            String generatedImagePath = GENERATED_OUTPUT_DIR + scene.getOutput();
 
             File generatedFile = new File(generatedImagePath);
             File expectedFile = new File(expectedPath);
@@ -64,39 +66,31 @@ public class RayTracerTest {
         }
     }
 
-    @Test
-    void testSpecular() {
-        assertRenderMatchesReference("tp51-specular.test", "tp51-specularr.png", 1000);
-    }
 
-    @Test
-    void testDiffuse() {
-        assertRenderMatchesReference("tp51-diffuse.test", "tp51-diffuse.png", 1000);
-    }
-
-    @Test
-    void testShadows() {
-        assertRenderMatchesReference("tp52.test", "tp52.png", 1000);
+    @ParameterizedTest(name = "Rendu de {0} comparé à {1}")
+    @CsvSource({
+            "jalon5/tp51-specular.test, jalon5/tp51-specular.png",
+            "jalon5/tp51-diffuse.test,  jalon5/tp51-diffuse.png",
+            "jalon5/tp52.test,          jalon5/tp52.png",
+            "jalon5/tp54.test,          jalon5/tp54.png",
+            "jalon5/tp55.test,          jalon5/tp55.png"
+    })
+    void testSceneJalon5(String sceneFile, String referenceImage) {
+        assertRenderMatchesReference(sceneFile, referenceImage, DEFAULT_TOLERANCE);
     }
 
     @ParameterizedTest(name = "Rendu de {0} comparé à {1}")
     @CsvSource({
-            "tp51-specular.test, tp51-specularr.png",
-            "tp51-diffuse.test,  tp51-diffuse.png",
-            "tp54.test,          tp54.png",
-            "tp55.test,          tp55.png",
-            "tp61.test,          tp61_real.png",
-            "tp61-dir.test,          tp61-dir.png",
-            "tp62-1.test,          tp62-1.png",
-            "tp62-2.test,          tp62-2-real.png",
-            "tp62-3.test,          tp62-3.png",
-            "tp62-4.test,          tp62-4.png",
-            "tp62-5.test,          tp62-5.png",
-            "tp63.test,          tp63.png"
-
-
+            "jalon6/tp61.test,          jalon6/tp61.png",
+            "jalon6/tp61-dir.test,          jalon6/tp61-dir.png",
+            "jalon6/tp62-1.test,          jalon6/tp62-1.png",
+            "jalon6/tp62-2.test,          jalon6/tp62-2.png",
+            "jalon6/tp62-3.test,          jalon6/tp62-3.png",
+            "jalon6/tp62-4.test,          jalon6/tp62-4.png",
+            "jalon6/tp62-5.test,          jalon6/tp62-5.png",
+            "jalon6/tp63.test,          jalon6/tp63.png",
     })
-    void testAllScenes(String sceneFile, String referenceImage) {
+    void testScenesJalon6(String sceneFile, String referenceImage) {
         assertRenderMatchesReference(sceneFile, referenceImage, DEFAULT_TOLERANCE);
     }
 }

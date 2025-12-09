@@ -43,9 +43,7 @@ public class Point extends AbstractVec3 {
         return "(" + x + ", " + y + ", " + z + ")";
     }
 
-    /**
-     * Applique une homothétie par rapport à l'origine (0,0,0).
-     */
+
     @Override
     public Point scale(double s) {
         return new Point(x * s, y * s, z * s);

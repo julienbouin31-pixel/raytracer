@@ -83,7 +83,6 @@ class VectorTest {
     void testEqualsWithFloatingPrecision() {
         Vector v1 = new Vector(1.000000001, 2.0, 3.0);
         Vector v2 = new Vector(1.000000002, 2.0, 3.0);
-
         assertEquals(v1, v2);
     }
 }
